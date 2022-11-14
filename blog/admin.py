@@ -8,6 +8,7 @@ class BlogAdmin(admin.ModelAdmin):
         "title",
         "time",
         "image",
+        "author"
     )
 
 admin.site.register(Blog, BlogAdmin)
