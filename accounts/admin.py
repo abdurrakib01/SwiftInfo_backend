@@ -1,20 +1,30 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from  .forms import UserChangeForm, UserCreationForm
-from .models import CustomUser
-# Register your models here.
-
+from .models import User
 class CustomUserAdmin(UserAdmin):
-    add_form = UserCreationForm
-    form = UserChangeForm
-    modle = CustomUser
-    list_display = [
-        "email",
-        "username",
-        "name",
-        "is_staff",
-    ]
-    fieldsets = UserAdmin.fieldsets + ((None, {"fields": ("name",)}),)
-    add_fieldsets = UserAdmin.add_fieldsets + ((None, {"fields": ("name",)}),)
 
-admin.site.register(CustomUser, CustomUserAdmin)
+    # The fields to be used in displaying the User model.
+    # These override the definitions on the base UserAdmin
+    # that reference specific fields on auth.User.
+    list_display = ('id', 'email', 'user_name','tc', 'is_admin')
+    list_filter = ('is_admin',)
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Personal info', {'fields': ('user_name', 'tc',)}),
+        ('Permissions', {'fields': ('is_admin',)}),
+    )
+    # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
+    # overrides get_fieldsets to use this attribute when creating a user.
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'user_name', 'tc', 'password', 'password2'),
+        }),
+    )
+    search_fields = ('email',)
+    ordering = ('email',)
+    filter_horizontal = ()
+
+
+# Now register the new UserAdmin...
+admin.site.register(User, CustomUserAdmin)
