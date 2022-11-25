@@ -17,7 +17,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         password = attrs.get('password')
-        password2 = attrs.get('password2')
+        password2 = attrs.get('password2') 
         if password != password2:
             raise serializers.ValidationError("password and conform password doesn't match")
         return attrs
@@ -80,3 +80,12 @@ class UserPasswordResetSerializer(serializers.Serializer):
         except DjangoUnicodeDecodeError as identifier:
             PasswordResetTokenGenerator().check_token(user, token)
             raise ValidationErr("Token is not Valid or Expired")
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'email',
+            'user_name'
+        ]

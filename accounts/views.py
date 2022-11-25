@@ -1,4 +1,4 @@
-from .serializers import UserRegistrationSerializer, UserLoginSerializer,SendPasswordResetSerializer,UserPasswordResetSerializer;
+from .serializers import UserRegistrationSerializer, UserLoginSerializer,SendPasswordResetSerializer,UserPasswordResetSerializer, UserProfileSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -35,7 +35,7 @@ class UserLoginView(APIView):
                 token = get_tokens_for_user(user)
                 return Response({'token':token, 'msg':'Login Successful'}, status=status.HTTP_200_OK)
             else:
-                return Response({'errors':{'non_field_errors':['email or password is not valid']}},
+                return Response({'non_field_errors':['email or password is not valid']},
                 status=status.HTTP_404_NOT_FOUND)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -57,3 +57,10 @@ class UserPasswordResetView(APIView):
             return Response({'msg':'Password Reset Successfully'},
             status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserProfileView(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+    def get(self, request, format=None):
+        serializer = UserProfileSerializer(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
