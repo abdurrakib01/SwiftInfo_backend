@@ -1,9 +1,10 @@
-from django.urls import path
-from .views import BlogDetailsView, BlogListView
+from django.urls import path, include
+from .views import PostList, PostDetail
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', BlogListView.as_view(), name='bloglist'),
-    path('<int:pk>/', BlogDetailsView.as_view(), name="blogdetails")
+    path('', PostList.as_view(), name='bloglist'),
+    path('<int:pk>/', PostDetail.as_view(), name="blogdetails"),
+    path('auth-user/', include('rest_framework.urls')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

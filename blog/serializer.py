@@ -1,7 +1,17 @@
 from rest_framework import serializers
 from .models import Blog
+from django.conf import settings
 
-class BlogSerializer(serializers.ModelSerializer):
+class PostSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.user_name')
+    image = serializers.ImageField()
     class Meta:
-       model = Blog
-       fields = "__all__"
+        model = Blog
+        fields = ['id', 'title', 'info', 'author', 'image']
+
+class UserSerializer(serializers.ModelSerializer):
+    posts = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = settings.AUTH_USER_MODEL
+        fields = ['id', 'user_name', 'posts']
