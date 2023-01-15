@@ -6,7 +6,7 @@ from .models import Blog
 class BlogAdmin(admin.ModelAdmin):
     list_display = (
         "title",
-        "time",
+        "created_at",
         "image",
         "author"
     )
