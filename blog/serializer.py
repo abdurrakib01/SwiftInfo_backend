@@ -15,3 +15,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = settings.AUTH_USER_MODEL
         fields = ['id', 'user_name', 'posts']
+    
+class SearchSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.user_name')
+    class Meta:
+        model = Blog
+        fields = ['id', 'title', 'info', 'author', 'image']
