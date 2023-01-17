@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 class Blog (models.Model):
-    image = models.ImageField(upload_to="Blog_Image", default="assets/topic3.png")
+    image = models.ImageField(upload_to="Blog_Image/", default="assets/topic3.png")
     title = models.CharField(max_length=100)
     info = models.TextField()
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

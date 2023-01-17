@@ -1,6 +1,6 @@
 from rest_framework import generics
 from .models import Blog
-from .serializer import PostSerializer
+from .serializer import PostSerializer, SearchSerializer
 from .api.permissions import IsOwnerOrReadOnly
 from rest_framework import permissions
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -25,12 +25,20 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class SearhBlog(APIView):
-
     def post(self, request, format=None):
         data = self.request.data
         str = data['str']
         q = (Q(title__icontains = str))
         queryset = Blog.objects.all()
         queryset = queryset.filter(q)
-        serializer = PostSerializer(queryset, many=True)
+        serializer = SearchSerializer(queryset, many=True, context={'request': request})
         return Response (serializer.data)
+
+class UserBlog(APIView):
+    def post(self, request, format=None):
+        data = self.request.data
+        email = data["email"]
+        queryset = Blog.objects.all()
+        queryset = queryset.filter(author__email = email)
+        serializer = SearchSerializer(queryset, many=True, context={'request':request})
+        return Response(serializer.data)
