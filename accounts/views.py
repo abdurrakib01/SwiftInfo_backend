@@ -6,6 +6,12 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from .renderers import UserRenderer
+from .models import UserInformation
+from .serializers import UserInfoSerializer
+from rest_framework import generics
+from rest_framework import permissions
+from blog.api.permissions import IsOwnerOrReadOnly
+from rest_framework.parsers import MultiPartParser, FormParser
 # Create your views here.
 
 def get_tokens_for_user(user):
@@ -64,3 +70,17 @@ class UserProfileView(APIView):
     def get(self, request, format=None):
         serializer = UserProfileSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class PostUserInformationView(generics.ListCreateAPIView):
+    queryset = UserInformation.objects.all()
+    serializer_class = UserInfoSerializer
+    parser_classes = (MultiPartParser, FormParser)
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+class UserInformationView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserInformation.objects.all()
+    serializer_class = UserInfoSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]

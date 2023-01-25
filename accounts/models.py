@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
+from django.conf import settings
 
 class UserManager(BaseUserManager):
     def create_user(self, email, user_name, tc, password=None, password2=None):
@@ -72,3 +73,12 @@ class User(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+
+class UserInformation(models.Model):
+    author = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    profile_image = models.ImageField(upload_to='Profile_image', blank=True, null=True)
+    bio = models.CharField(max_length=200, blank=True, null=True)
+    
+    def __str___(self):
+        return self.user
