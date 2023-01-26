@@ -103,7 +103,7 @@ class UserInformationDetails(APIView):
     
     def get(self, request, pk, format=None):
         userinfo = self.get_object(pk)
-        serializer = UserInfoSerializer(userinfo)
+        serializer = UserInfoSerializer(userinfo, context={'request':request})
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
