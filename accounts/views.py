@@ -1,4 +1,9 @@
-from .serializers import UserRegistrationSerializer, UserLoginSerializer,SendPasswordResetSerializer,UserPasswordResetSerializer, UserProfileSerializer
+from .serializers import (
+    UserRegistrationSerializer, 
+    UserLoginSerializer,
+    SendPasswordResetSerializer,
+    UserPasswordResetSerializer, 
+    UserProfileSerializer)
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -82,9 +87,9 @@ class UserInformationList(APIView):
         return Response (serializer.data)
 
     def post(self, request, format=None):
-        serializer = UserInfoSerializer(request.data)
+        serializer = UserInfoSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(author=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -123,26 +128,3 @@ class UserInformationDetails(APIView):
         userinfo = self.get_object(pk)
         userinfo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-    
-
-
-
-
-
-
-
-
-
-class PostUserInformationView(generics.ListCreateAPIView):
-    queryset = UserInformation.objects.all()
-    serializer_class = UserInfoSerializer
-    parser_classes = (MultiPartParser, FormParser)
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
-
-class UserInformationView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = UserInformation.objects.all()
-    serializer_class = UserInfoSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
