@@ -27,6 +27,7 @@ def get_tokens_for_user(user):
         'refresh': str(refresh),
         'access': str(refresh.access_token),
     }
+    
 class UserRegistraionView(APIView):
     def post(self, request, format=None):
         serializer = UserRegistrationSerializer(data=request.data)
@@ -77,13 +78,11 @@ class UserProfileView(APIView):
         serializer = UserProfileSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
-
 class UserInformationList(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         userinfo = UserInformation.objects.all()
-        serializer = UserInfoSerializer(userinfo, many=True)
+        serializer = UserInfoSerializer(userinfo, many=True, context={'request':request})
         return Response (serializer.data)
 
     def post(self, request, format=None):
