@@ -19,6 +19,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -26,3 +27,5 @@ urlpatterns = [
     path('', include('blog.urls')),
     path('api/user/', include('accounts.urls')),
 ]
+
+urlpatterns += staticfiles_urlpatterns()
