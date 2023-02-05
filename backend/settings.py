@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-*@kwhmb&-7h(pa@xd&ji(ja4gy6qb&q5jl*(&y_y6_nmu7x7*(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -58,6 +58,7 @@ MIDDLEWARE = [
 ]
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
+    'https://swiftinfo.vercel.app',
 ]
 ROOT_URLCONF = 'backend.urls'
 
