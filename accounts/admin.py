@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User
+from .models import User, UserInformation
 class CustomUserAdmin(UserAdmin):
 
     # The fields to be used in displaying the User model.
@@ -25,6 +25,12 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
     filter_horizontal = ()
 
-
+class UserInfoAdmin(admin.ModelAdmin):
+    list_display = [
+        'author',
+        'profile_image',
+        'bio',
+    ]
 # Now register the new UserAdmin...
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(UserInformation, UserInfoAdmin)

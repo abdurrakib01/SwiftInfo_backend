@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-*@kwhmb&-7h(pa@xd&ji(ja4gy6qb&q5jl*(&y_y6_nmu7x7*(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -58,6 +58,7 @@ MIDDLEWARE = [
 ]
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
+    'https://swiftinfo.vercel.app',
 ]
 ROOT_URLCONF = 'backend.urls'
 
@@ -83,17 +84,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Blog',
-        'USER' : 'postgres',
-        'PASSWORD' : 'rakib13656',
-        'HOST' : '127.0.0.1',
-        'PORT' : '5432'
-    }
-}
 
+import dj_database_url
+import os
+DATABASES = {
+    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -128,7 +124,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-import os
 STATIC_URL = 'static/'
 MEDIA_URL = "media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

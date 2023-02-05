@@ -1,6 +1,6 @@
 from xml.dom import ValidationErr
 from rest_framework import serializers
-from .models import User
+from .models import User, UserInformation
 from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -89,3 +89,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'email',
             'user_name'
         ]
+
+
+
+
+class UserInfoSerializer(serializers.ModelSerializer):
+
+    user_id = serializers.ReadOnlyField(source='author.id')
+    profile_image = serializers.ImageField()
+    class Meta:
+        model = UserInformation
+        fields = ('user_id', 'profile_image', 'bio')
