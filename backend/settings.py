@@ -79,14 +79,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
-
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-
 import os
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
